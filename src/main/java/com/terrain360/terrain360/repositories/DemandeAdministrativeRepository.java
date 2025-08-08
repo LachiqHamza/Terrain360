@@ -1,0 +1,7 @@
+package com.terrain360.terrain360.repositories;
+
+import com.terrain360.terrain360.entities.DemandeAdministrative;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface DemandeAdministrativeRepository extends JpaRepository<DemandeAdministrative, Long> {
+}
