@@ -5,13 +5,16 @@ import com.terrain360.terrain360.entities.Employe;
 import com.terrain360.terrain360.repositories.ContratRepository;
 import com.terrain360.terrain360.repositories.EmployeRepository;
 import com.terrain360.terrain360.services.ContratService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class ContratServiceImpl implements ContratService {
-
-    private final ContratRepository contratRepository;
-    private final EmployeRepository employeRepository;
+    @Autowired
+    private  ContratRepository contratRepository;
+    @Autowired
+    private  EmployeRepository employeRepository;
 
     public ContratServiceImpl(ContratRepository contratRepository, EmployeRepository employeRepository) {
         this.contratRepository = contratRepository;

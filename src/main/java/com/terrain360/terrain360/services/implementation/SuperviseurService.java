@@ -3,6 +3,7 @@ package com.terrain360.terrain360.services.implementation;
 
 import com.terrain360.terrain360.entities.Superviseur;
 import com.terrain360.terrain360.repositories.SuperviseurRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,7 +11,8 @@ import java.util.Optional;
 
 @Service
 public class SuperviseurService {
-    private final SuperviseurRepository superviseurRepository;
+    @Autowired
+    private  SuperviseurRepository superviseurRepository;
 
     public SuperviseurService(SuperviseurRepository superviseurRepository) {
         this.superviseurRepository = superviseurRepository;

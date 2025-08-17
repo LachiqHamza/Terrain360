@@ -1,17 +1,18 @@
 package com.terrain360.terrain360.entities;
 
-
 import jakarta.persistence.*;
-
 import java.util.List;
 
 @Entity
+@Table(name = "employe")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Employe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Version
+    private Long version;
     private String nom;
     private String prenom;
     private String email;
@@ -37,6 +38,14 @@ public class Employe {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 
     public String getNom() {

@@ -2,6 +2,7 @@ package com.terrain360.terrain360.services.implementation;
 
 import com.terrain360.terrain360.entities.Etude;
 import com.terrain360.terrain360.repositories.EtudeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,7 +10,8 @@ import java.util.Optional;
 
 @Service
 public class EtudeService {
-    private final EtudeRepository etudeRepository;
+    @Autowired
+    private  EtudeRepository etudeRepository;
 
     public EtudeService(EtudeRepository etudeRepository) {
         this.etudeRepository = etudeRepository;

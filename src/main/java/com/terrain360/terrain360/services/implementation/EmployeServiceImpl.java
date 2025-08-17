@@ -4,20 +4,28 @@ import com.terrain360.terrain360.entities.Employe;
 import com.terrain360.terrain360.repositories.EmployeRepository;
 import com.terrain360.terrain360.services.EmployeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class EmployeServiceImpl implements EmployeService {
-
-    private final EmployeRepository employeRepository;
+    @Autowired
+    private  EmployeRepository employeRepository;
 
     public EmployeServiceImpl(EmployeRepository employeRepository) {
         this.employeRepository = employeRepository;
     }
 
     @Override
+    @Transactional
     public Employe saveEmploye(Employe employe) {
+
+        if(employe.getId() != null) {
+            throw new IllegalArgumentException("New employee cannot have an ID");
+        }
         return employeRepository.save(employe);
     }
 

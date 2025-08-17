@@ -5,13 +5,16 @@ import com.terrain360.terrain360.entities.Salaire;
 import com.terrain360.terrain360.repositories.EmployeRepository;
 import com.terrain360.terrain360.repositories.SalaireRepository;
 import com.terrain360.terrain360.services.SalaireService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class SalaireServiceImpl implements SalaireService {
-
-    private final SalaireRepository salaireRepository;
-    private final EmployeRepository employeRepository;
+    @Autowired
+    private  SalaireRepository salaireRepository;
+    @Autowired
+    private  EmployeRepository employeRepository;
 
     public SalaireServiceImpl(SalaireRepository salaireRepository, EmployeRepository employeRepository) {
         this.salaireRepository = salaireRepository;

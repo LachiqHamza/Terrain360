@@ -5,12 +5,16 @@ import com.terrain360.terrain360.entities.Employe;
 import com.terrain360.terrain360.repositories.AbsenceRepository;
 import com.terrain360.terrain360.repositories.EmployeRepository;
 import com.terrain360.terrain360.services.AbsenceService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class AbsenceServiceImpl implements AbsenceService {
 
-    private final AbsenceRepository absenceRepository;
+    @Autowired
+    private  AbsenceRepository absenceRepository;
+    @Autowired
     private final EmployeRepository employeRepository;
 
     public AbsenceServiceImpl(AbsenceRepository absenceRepository, EmployeRepository employeRepository) {

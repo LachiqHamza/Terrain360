@@ -2,6 +2,7 @@ package com.terrain360.terrain360.services.implementation;
 
 import com.terrain360.terrain360.entities.Enqueteur;
 import com.terrain360.terrain360.repositories.EnqueteurRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,7 +10,8 @@ import java.util.Optional;
 
 @Service
 public class EnqueteurService {
-    private final EnqueteurRepository enqueteurRepository;
+    @Autowired
+    private  EnqueteurRepository enqueteurRepository;
 
     public EnqueteurService(EnqueteurRepository enqueteurRepository) {
         this.enqueteurRepository = enqueteurRepository;

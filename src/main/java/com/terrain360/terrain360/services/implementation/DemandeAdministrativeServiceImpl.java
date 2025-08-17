@@ -5,13 +5,16 @@ import com.terrain360.terrain360.entities.Employe;
 import com.terrain360.terrain360.repositories.DemandeAdministrativeRepository;
 import com.terrain360.terrain360.repositories.EmployeRepository;
 import com.terrain360.terrain360.services.DemandeAdministrativeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class DemandeAdministrativeServiceImpl implements DemandeAdministrativeService {
-
-    private final DemandeAdministrativeRepository repository;
-    private final EmployeRepository employeRepository;
+    @Autowired
+    private  DemandeAdministrativeRepository repository;
+    @Autowired
+    private  EmployeRepository employeRepository;
 
     public DemandeAdministrativeServiceImpl(DemandeAdministrativeRepository repository, EmployeRepository employeRepository) {
         this.repository = repository;

@@ -1,17 +1,31 @@
 package com.terrain360.terrain360.entities;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-
+import jakarta.persistence.*;
 import java.util.List;
 
-
 @Entity
-public class Superviseur extends Employe{
+@Table(name = "superviseur")
+@PrimaryKeyJoinColumn(name = "employe_id")
+public class Superviseur extends Employe {
     @OneToMany(mappedBy = "superviseur", cascade = CascadeType.ALL)
     private List<Etude> etudes;
 
     @OneToMany(mappedBy = "superviseur", cascade = CascadeType.ALL)
     private List<CommentaireEnqueteur> commentaires;
+
+    public List<Etude> getEtudes() {
+        return etudes;
+    }
+
+    public void setEtudes(List<Etude> etudes) {
+        this.etudes = etudes;
+    }
+
+    public List<CommentaireEnqueteur> getCommentaires() {
+        return commentaires;
+    }
+
+    public void setCommentaires(List<CommentaireEnqueteur> commentaires) {
+        this.commentaires = commentaires;
+    }
 }
