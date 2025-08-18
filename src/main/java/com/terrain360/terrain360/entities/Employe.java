@@ -6,6 +6,7 @@ import java.util.List;
 @Entity
 @Table(name = "employe")
 @Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "employee_type", discriminatorType = DiscriminatorType.STRING)
 public class Employe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

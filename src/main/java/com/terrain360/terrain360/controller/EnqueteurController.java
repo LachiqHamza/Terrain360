@@ -1,6 +1,5 @@
 package com.terrain360.terrain360.controller;
 
-
 import com.terrain360.terrain360.entities.Enqueteur;
 import com.terrain360.terrain360.services.implementation.EnqueteurService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,19 +9,22 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/enqueteurs")
 @Tag(name = "Investigator Management", description = "Operations related to investigators")
-
 public class EnqueteurController {
+    private final EnqueteurService enqueteurService;
+
     @Autowired
-    private EnqueteurService enqueteurService;
+    public EnqueteurController(EnqueteurService enqueteurService) {
+        this.enqueteurService = enqueteurService;
+    }
 
     @Operation(summary = "Get all investigators")
     @ApiResponse(responseCode = "200", description = "List of investigators retrieved successfully",
@@ -40,19 +42,21 @@ public class EnqueteurController {
             @ApiResponse(responseCode = "404", description = "Investigator not found")
     })
     public ResponseEntity<Enqueteur> getEnqueteurById(@PathVariable Long id) {
-        Optional<Enqueteur> enqueteur = enqueteurService.getEnqueteurById(id);
-        return enqueteur.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return enqueteurService.getEnqueteurById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @Operation(summary = "Create a new investigator")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Investigator created successfully",
+            @ApiResponse(responseCode = "201", description = "Investigator created successfully",
                     content = @Content(schema = @Schema(implementation = Enqueteur.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input")
     })
     @PostMapping
     public ResponseEntity<Enqueteur> createEnqueteur(@RequestBody Enqueteur enqueteur) {
-        return ResponseEntity.ok(enqueteurService.saveEnqueteur(enqueteur));
+        Enqueteur savedEnqueteur = enqueteurService.saveEnqueteur(enqueteur);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedEnqueteur);
     }
 
     @Operation(summary = "Update an investigator")

@@ -9,20 +9,22 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/superviseurs")
 @Tag(name = "Supervisor Management", description = "Operations related to supervisors")
-
 public class SuperviseurController {
+    private final SuperviseurService superviseurService;
 
     @Autowired
-    private  SuperviseurService superviseurService;
+    public SuperviseurController(SuperviseurService superviseurService) {
+        this.superviseurService = superviseurService;
+    }
 
     @Operation(summary = "Get all supervisors")
     @ApiResponse(responseCode = "200", description = "List of supervisors retrieved successfully",
@@ -40,19 +42,21 @@ public class SuperviseurController {
     })
     @GetMapping("/{id}")
     public ResponseEntity<Superviseur> getSuperviseurById(@PathVariable Long id) {
-        Optional<Superviseur> superviseur = superviseurService.getSuperviseurById(id);
-        return superviseur.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return superviseurService.getSuperviseurById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @Operation(summary = "Create a new supervisor")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Supervisor created successfully",
+            @ApiResponse(responseCode = "201", description = "Supervisor created successfully",
                     content = @Content(schema = @Schema(implementation = Superviseur.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input")
     })
     @PostMapping
     public ResponseEntity<Superviseur> createSuperviseur(@RequestBody Superviseur superviseur) {
-        return ResponseEntity.ok(superviseurService.saveSuperviseur(superviseur));
+        Superviseur savedSuperviseur = superviseurService.saveSuperviseur(superviseur);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedSuperviseur);
     }
 
     @Operation(summary = "Update a supervisor")
@@ -66,12 +70,12 @@ public class SuperviseurController {
         return ResponseEntity.ok(superviseurService.updateSuperviseur(id, updated));
     }
 
-    @DeleteMapping("/{id}")
     @Operation(summary = "Delete a supervisor")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Supervisor deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Supervisor not found")
     })
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteSuperviseur(@PathVariable Long id) {
         superviseurService.deleteSuperviseur(id);
         return ResponseEntity.noContent().build();

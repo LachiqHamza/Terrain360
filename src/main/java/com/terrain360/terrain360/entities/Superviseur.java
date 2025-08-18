@@ -5,6 +5,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "superviseur")
+@DiscriminatorValue("SUPERVISEUR")
 @PrimaryKeyJoinColumn(name = "employe_id")
 public class Superviseur extends Employe {
     @OneToMany(mappedBy = "superviseur", cascade = CascadeType.ALL)
