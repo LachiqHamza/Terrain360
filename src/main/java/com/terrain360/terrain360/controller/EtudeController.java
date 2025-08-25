@@ -1,7 +1,9 @@
 package com.terrain360.terrain360.controller;
 
 
+import com.terrain360.terrain360.entities.Enqueteur;
 import com.terrain360.terrain360.entities.Etude;
+import com.terrain360.terrain360.entities.Superviseur;
 import com.terrain360.terrain360.services.implementation.EtudeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/etudes")
 @Tag(name = "Study Management", description = "Operations related to studies")
@@ -75,5 +78,18 @@ public class EtudeController {
     public ResponseEntity<Void> deleteEtude(@PathVariable Long id) {
         etudeService.deleteEtude(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/superviseur")
+    public ResponseEntity<Superviseur> getSuperviseurByEtude(@PathVariable Long id) {
+        return ResponseEntity.ok(etudeService.getSuperviseurByEtude(id));
+    }
+
+    @PostMapping("/{id}/enqueteurs")
+    public ResponseEntity<Etude> assignEnqueteurToEtude(
+            @PathVariable Long id,
+            @RequestBody Enqueteur enqueteur
+    ) {
+        return ResponseEntity.ok(etudeService.assignEnqueteurToEtude(id, enqueteur));
     }
 }

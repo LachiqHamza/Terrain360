@@ -1,5 +1,6 @@
 package com.terrain360.terrain360.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -22,15 +23,19 @@ public class Employe {
     private String poste;
 
     @OneToMany(mappedBy = "employe", cascade = CascadeType.ALL)
+    @JsonIgnore // Prevent circular reference
     private List<Contrat> contrats;
 
     @OneToMany(mappedBy = "employe", cascade = CascadeType.ALL)
+    @JsonIgnore // Prevent circular reference
     private List<Absence> absences;
 
     @OneToMany(mappedBy = "employe", cascade = CascadeType.ALL)
+    @JsonIgnore // Prevent circular reference
     private List<Salaire> salaires;
 
     @OneToMany(mappedBy = "employe", cascade = CascadeType.ALL)
+    @JsonIgnore // Prevent circular reference
     private List<DemandeAdministrative> demandes;
 
     public Long getId() {

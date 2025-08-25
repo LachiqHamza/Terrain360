@@ -1,6 +1,8 @@
 package com.terrain360.terrain360.services.implementation;
 
+import com.terrain360.terrain360.entities.Enqueteur;
 import com.terrain360.terrain360.entities.Etude;
+import com.terrain360.terrain360.entities.Superviseur;
 import com.terrain360.terrain360.repositories.EtudeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,5 +44,21 @@ public class EtudeService {
 
     public void deleteEtude(Long id) {
         etudeRepository.deleteById(id);
+    }
+
+    public Superviseur getSuperviseurByEtude(Long id) {
+        return etudeRepository.findById(id)
+                .map(Etude::getSuperviseur)
+                .orElseThrow(() -> new RuntimeException("Etude not found"));
+    }
+
+    public Etude assignEnqueteurToEtude(Long etudeId, Enqueteur enqueteur) {
+        return etudeRepository.findById(etudeId)
+                .map(etude -> {
+                    enqueteur.setEtude(etude); // link enqueteur to etude
+                    etude.getEnqueteurs().add(enqueteur);
+                    return etudeRepository.save(etude);
+                })
+                .orElseThrow(() -> new RuntimeException("Etude not found"));
     }
 }
