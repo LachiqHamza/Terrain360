@@ -12,8 +12,8 @@ public class DemandeAdministrative {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String typeDemande; // ex: Attestation, Congé, etc.
-    private String statut;      // en attente, validée, refusée
+    private String typeDemande;
+    private String statut;
     private LocalDate dateDemande;
 
     @ManyToOne

@@ -1,6 +1,5 @@
 package com.terrain360.terrain360.services.implementation.questionnaire;
 
-
 import com.terrain360.terrain360.entities.questionnaire.ReponseQuestionnaire;
 import com.terrain360.terrain360.repositories.questionnaire.ReponseQuestionnaireRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import java.util.List;
 
 @Service
 public class ReponseQuestionnaireService {
+
     @Autowired
     private ReponseQuestionnaireRepository repo;
 
@@ -20,7 +20,20 @@ public class ReponseQuestionnaireService {
     public ReponseQuestionnaire saveReponse(ReponseQuestionnaire r) {
         return repo.save(r);
     }
+
     public List<ReponseQuestionnaire> saveAll(List<ReponseQuestionnaire> reponses) {
         return repo.saveAll(reponses);
+    }
+
+    public List<ReponseQuestionnaire> getReponsesByEnqueteur(Long employeId) {
+        return repo.findAll().stream()
+                .filter(r -> r.getEnqueteur() != null && r.getEnqueteur().getId().equals(employeId))
+                .toList();
+    }
+
+    public List<ReponseQuestionnaire> getReponsesByQuestionnaire(Long questionnaireId) {
+        return repo.findAll().stream()
+                .filter(r -> r.getQuestionnaire() != null && r.getQuestionnaire().getId().equals(questionnaireId))
+                .toList();
     }
 }

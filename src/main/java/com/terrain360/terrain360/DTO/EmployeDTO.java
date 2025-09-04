@@ -1,103 +1,65 @@
-package com.terrain360.terrain360.entities;
+package com.terrain360.terrain360.DTO;
 
-import jakarta.persistence.*;
+import com.terrain360.terrain360.entities.Role;
+
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "employe")
-public class Employe {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class EmployeDTO {
     private Long id;
-
     private String nom;
     private String prenom;
     private LocalDate dateNaissance;
     private String adresse;
-
-    @Column(unique = true)
     private String nomDeUtilisateur;
-
-    private String motDePasse;
     private String telephone;
     private String imageProfil;
     private String genre;
-
-    @Enumerated(EnumType.STRING)
     private Role role;
-
-    // Additional attributes
     private String email;
     private LocalDate dateEmbauche;
     private String matricule;
     private String departement;
     private String poste;
     private Double salaire;
-    private Boolean actif = true;
+    private Boolean actif;
 
-    // ===== Constructors =====
-    public Employe() {}
+    // Constructors
+    public EmployeDTO() {}
 
-    public Employe(String nom, String prenom, String email, Role role) {
-        this.nom = nom;
-        this.prenom = prenom;
-        this.email = email;
-        this.role = role;
-    }
-
-    // ===== Getters & Setters =====
+    // Getters and setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-
     public String getNom() { return nom; }
     public void setNom(String nom) { this.nom = nom; }
-
     public String getPrenom() { return prenom; }
     public void setPrenom(String prenom) { this.prenom = prenom; }
-
     public LocalDate getDateNaissance() { return dateNaissance; }
     public void setDateNaissance(LocalDate dateNaissance) { this.dateNaissance = dateNaissance; }
-
     public String getAdresse() { return adresse; }
     public void setAdresse(String adresse) { this.adresse = adresse; }
-
     public String getNomDeUtilisateur() { return nomDeUtilisateur; }
     public void setNomDeUtilisateur(String nomDeUtilisateur) { this.nomDeUtilisateur = nomDeUtilisateur; }
-
-    public String getMotDePasse() { return motDePasse; }
-    public void setMotDePasse(String motDePasse) { this.motDePasse = motDePasse; }
-
     public String getTelephone() { return telephone; }
     public void setTelephone(String telephone) { this.telephone = telephone; }
-
     public String getImageProfil() { return imageProfil; }
     public void setImageProfil(String imageProfil) { this.imageProfil = imageProfil; }
-
     public String getGenre() { return genre; }
     public void setGenre(String genre) { this.genre = genre; }
-
     public Role getRole() { return role; }
     public void setRole(Role role) { this.role = role; }
-
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
-
     public LocalDate getDateEmbauche() { return dateEmbauche; }
     public void setDateEmbauche(LocalDate dateEmbauche) { this.dateEmbauche = dateEmbauche; }
-
     public String getMatricule() { return matricule; }
     public void setMatricule(String matricule) { this.matricule = matricule; }
-
     public String getDepartement() { return departement; }
     public void setDepartement(String departement) { this.departement = departement; }
-
     public String getPoste() { return poste; }
     public void setPoste(String poste) { this.poste = poste; }
-
     public Double getSalaire() { return salaire; }
     public void setSalaire(Double salaire) { this.salaire = salaire; }
-
     public Boolean getActif() { return actif; }
     public void setActif(Boolean actif) { this.actif = actif; }
 }
+

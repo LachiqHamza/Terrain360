@@ -1,9 +1,9 @@
 package com.terrain360.terrain360.controller;
 
 
-import com.terrain360.terrain360.entities.Enqueteur;
+import com.terrain360.terrain360.DTO.CreateEtudeDTO;
 import com.terrain360.terrain360.entities.Etude;
-import com.terrain360.terrain360.entities.Superviseur;
+import com.terrain360.terrain360.entities.Employe;
 import com.terrain360.terrain360.services.implementation.EtudeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -22,8 +22,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/etudes")
 @Tag(name = "Study Management", description = "Operations related to studies")
-
 public class EtudeController {
+
     @Autowired
     private EtudeService etudeService;
 
@@ -54,8 +54,8 @@ public class EtudeController {
             @ApiResponse(responseCode = "400", description = "Invalid input")
     })
     @PostMapping
-    public ResponseEntity<Etude> createEtude(@RequestBody Etude etude) {
-        return ResponseEntity.ok(etudeService.saveEtude(etude));
+    public ResponseEntity<Etude> createEtude(@RequestBody CreateEtudeDTO etudeDTO) {
+        return ResponseEntity.ok(etudeService.saveEtude(etudeDTO));
     }
 
     @Operation(summary = "Update a study")
@@ -80,16 +80,67 @@ public class EtudeController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Get supervisor by study ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Supervisor found",
+                    content = @Content(schema = @Schema(implementation = Employe.class))),
+            @ApiResponse(responseCode = "404", description = "Study not found")
+    })
     @GetMapping("/{id}/superviseur")
-    public ResponseEntity<Superviseur> getSuperviseurByEtude(@PathVariable Long id) {
+    public ResponseEntity<Employe> getSuperviseurByEtude(@PathVariable Long id) {
         return ResponseEntity.ok(etudeService.getSuperviseurByEtude(id));
     }
 
-    @PostMapping("/{id}/enqueteurs")
+    @Operation(summary = "Assign investigator to study")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Investigator assigned successfully",
+                    content = @Content(schema = @Schema(implementation = Etude.class))),
+            @ApiResponse(responseCode = "404", description = "Study or employee not found"),
+            @ApiResponse(responseCode = "400", description = "Employee is not an investigator")
+    })
+    @PostMapping("/{etudeId}/enqueteurs/{employeId}")
     public ResponseEntity<Etude> assignEnqueteurToEtude(
-            @PathVariable Long id,
-            @RequestBody Enqueteur enqueteur
+            @PathVariable Long etudeId,
+            @PathVariable Long employeId
     ) {
-        return ResponseEntity.ok(etudeService.assignEnqueteurToEtude(id, enqueteur));
+        return ResponseEntity.ok(etudeService.assignEnqueteurToEtude(etudeId, employeId));
+    }
+
+    @Operation(summary = "Remove investigator from study")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Investigator removed successfully",
+                    content = @Content(schema = @Schema(implementation = Etude.class))),
+            @ApiResponse(responseCode = "404", description = "Study not found")
+    })
+    @DeleteMapping("/{etudeId}/enqueteurs/{employeId}")
+    public ResponseEntity<Etude> removeEnqueteurFromEtude(
+            @PathVariable Long etudeId,
+            @PathVariable Long employeId
+    ) {
+        return ResponseEntity.ok(etudeService.removeEnqueteurFromEtude(etudeId, employeId));
+    }
+
+    @Operation(summary = "Get studies by supervisor ID")
+    @ApiResponse(responseCode = "200", description = "List of studies retrieved successfully",
+            content = @Content(schema = @Schema(implementation = Etude.class)))
+    @GetMapping("/superviseur/{superviseurId}")
+    public ResponseEntity<List<Etude>> getEtudesBySuperviseur(@PathVariable Long superviseurId) {
+        return ResponseEntity.ok(etudeService.getEtudesBySuperviseur(superviseurId));
+    }
+
+    @Operation(summary = "Get studies by investigator ID")
+    @ApiResponse(responseCode = "200", description = "List of studies retrieved successfully",
+            content = @Content(schema = @Schema(implementation = Etude.class)))
+    @GetMapping("/enqueteur/{employeId}")
+    public ResponseEntity<List<Etude>> getEtudesByEnqueteur(@PathVariable Long employeId) {
+        return ResponseEntity.ok(etudeService.getEtudesByEnqueteur(employeId));
+    }
+
+    @Operation(summary = "Get investigators by study ID")
+    @ApiResponse(responseCode = "200", description = "List of investigators retrieved successfully",
+            content = @Content(schema = @Schema(implementation = Employe.class)))
+    @GetMapping("/{etudeId}/enqueteurs")
+    public ResponseEntity<List<Employe>> getEnqueteursByEtude(@PathVariable Long etudeId) {
+        return ResponseEntity.ok(etudeService.getEnqueteursByEtude(etudeId));
     }
 }

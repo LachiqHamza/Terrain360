@@ -1,8 +1,6 @@
 package com.terrain360.terrain360.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -18,37 +16,41 @@ public class Etude {
     private String nom;
     private LocalDate dateDebut;
     private LocalDate dateFin;
-    private int objectifQuotas; // ✅ keep this
+    private int objectifQuotas;
 
-    // 🔹 Many Etudes belong to one Superviseur
+    // 🔹 Many Etudes belong to one Supervisor (now using Employe with role)
     @ManyToOne
     @JoinColumn(name = "superviseur_id")
-    @JsonBackReference("superviseur-etudes") // Break circular reference
-    private Superviseur superviseur;
+    private Employe superviseur;
 
-    // 🔹 One Etude can have many Enqueteurs
-    @OneToMany(mappedBy = "etude", cascade = CascadeType.ALL)
-    @JsonManagedReference("etude-enqueteurs") // Break circular reference
-    private List<Enqueteur> enqueteurs;
+    // 🔹 One Etude can have many Enqueteurs (now using ManyToMany with Employe)
+    @ManyToMany
+    @JoinTable(
+            name = "etude_enqueteurs",
+            joinColumns = @JoinColumn(name = "etude_id"),
+            inverseJoinColumns = @JoinColumn(name = "employe_id")
+    )
+    @JsonIgnore
+    private List<Employe> enqueteurs;
 
     // 🔹 One Etude can have many Quotas
     @OneToMany(mappedBy = "etude", cascade = CascadeType.ALL)
-    @JsonIgnore // Prevent circular reference
+    @JsonIgnore
     private List<Quota> quotas;
 
     // 🔹 One Etude can have many Adresses
     @OneToMany(mappedBy = "etude", cascade = CascadeType.ALL)
-    @JsonIgnore // Prevent circular reference
+    @JsonIgnore
     private List<Adresse> adresses;
 
     // 🔹 One Etude can have many Taches
     @OneToMany(mappedBy = "etude", cascade = CascadeType.ALL)
-    @JsonIgnore // Prevent circular reference
+    @JsonIgnore
     private List<Tache> taches;
 
     // 🔹 One Etude can have one GanttPlan
     @OneToOne(mappedBy = "etude", cascade = CascadeType.ALL)
-    @JsonIgnore // Prevent circular reference
+    @JsonIgnore
     private GanttPlan ganttPlan;
 
     // ===== Getters & Setters =====
@@ -67,11 +69,11 @@ public class Etude {
     public int getObjectifQuotas() { return objectifQuotas; }
     public void setObjectifQuotas(int objectifQuotas) { this.objectifQuotas = objectifQuotas; }
 
-    public Superviseur getSuperviseur() { return superviseur; }
-    public void setSuperviseur(Superviseur superviseur) { this.superviseur = superviseur; }
+    public Employe getSuperviseur() { return superviseur; }
+    public void setSuperviseur(Employe superviseur) { this.superviseur = superviseur; }
 
-    public List<Enqueteur> getEnqueteurs() { return enqueteurs; }
-    public void setEnqueteurs(List<Enqueteur> enqueteurs) { this.enqueteurs = enqueteurs; }
+    public List<Employe> getEnqueteurs() { return enqueteurs; }
+    public void setEnqueteurs(List<Employe> enqueteurs) { this.enqueteurs = enqueteurs; }
 
     public List<Quota> getQuotas() { return quotas; }
     public void setQuotas(List<Quota> quotas) { this.quotas = quotas; }
