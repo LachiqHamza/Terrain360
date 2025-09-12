@@ -1,6 +1,5 @@
 package com.terrain360.terrain360.services.implementation;
 
-
 import com.terrain360.terrain360.DTO.CreateEtudeDTO;
 import com.terrain360.terrain360.entities.Etude;
 import com.terrain360.terrain360.entities.Employe;
@@ -137,10 +136,7 @@ public class EtudeService {
     }
 
     public List<Etude> getEtudesByEnqueteur(Long employeId) {
-        return etudeRepository.findAll().stream()
-                .filter(etude -> etude.getEnqueteurs().stream()
-                        .anyMatch(enq -> enq.getId().equals(employeId)))
-                .toList();
+        return etudeRepository.findByEnqueteursId(employeId);
     }
 
     public List<Employe> getEnqueteursByEtude(Long etudeId) {
